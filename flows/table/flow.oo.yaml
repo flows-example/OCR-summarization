@@ -1,0 +1,92 @@
+nodes:
+  - task: common::file_reader
+    node_id: d087fdd4-4683-4e3b-9ef5-c4bb53ff9fd4
+    inputs_from:
+      - handle: file
+        cache:
+          initial_value: /oomol-storage/tesseract/中国历年发电量(79前）.xlsx
+    title: Read File
+  - task: excel::excel_decoder
+    node_id: 03c4e59c-dc8c-46ae-815d-11bf0b8e0c10
+    inputs_from:
+      - handle: disable_field_names
+      - handle: binary
+        from_node:
+          - node_id: d087fdd4-4683-4e3b-9ef5-c4bb53ff9fd4
+            output_handle: binary
+    title: Decode EXCEL
+  - task: ../../blocks/python_lib_69f4f6/block.oo.yaml
+    node_id: f4f6e3b0-8cfb-4599-b08a-37203e11dc96
+    inputs_from:
+      - handle: rows
+        from_node:
+          - node_id: 03c4e59c-dc8c-46ae-815d-11bf0b8e0c10
+            output_handle: rows
+      - handle: fields
+        from_node:
+          - node_id: 03c4e59c-dc8c-46ae-815d-11bf0b8e0c10
+            output_handle: fields
+      - handle: kinds
+        cache:
+          initial_value:
+            - 水电
+            - 火电
+            - 核电
+      - handle: x_coordinate_name
+        cache:
+          initial_value: 年份
+      - handle: with_sum
+        cache:
+          initial_value: true
+    title: Transform
+  - task: matplotlib::plot
+    node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
+    inputs_from:
+      - handle: width
+        cache:
+          initial_value: 10
+      - handle: height
+        cache:
+          initial_value: 7
+      - handle: title
+        cache:
+          initial_value: 中国历年全国发电量
+      - handle: data
+        from_node:
+          - node_id: f4f6e3b0-8cfb-4599-b08a-37203e11dc96
+            output_handle: data
+      - handle: x_coordinate
+        from_node:
+          - node_id: f4f6e3b0-8cfb-4599-b08a-37203e11dc96
+            output_handle: x_coordinate
+      - handle: x_label
+        cache:
+          initial_value: 年份
+      - handle: y_label
+        cache:
+          initial_value: 亿 kWh
+      - handle: background_color
+    title: Plot
+  - task: common::file_writer
+    node_id: f7378005-1c79-4284-9f3e-505866ff68b8
+    inputs_from:
+      - handle: file_name
+        cache:
+          initial_value: Plot.png
+      - handle: output_folder
+        cache:
+          initial_value: /oomol-storage/tesseract
+      - handle: when_file_exists
+        cache:
+          initial_value: override
+      - handle: binary
+        from_node:
+          - node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
+            output_handle: image
+  - task: common::preview
+    node_id: c10abf2f-7dec-4ff1-9913-7c8f8247c9ef
+    inputs_from:
+      - handle: file
+        from_node:
+          - node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
+            output_handle: image
