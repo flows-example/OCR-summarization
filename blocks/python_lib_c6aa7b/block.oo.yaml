@@ -1,0 +1,26 @@
+type: task_block
+title: python_lib_c6aa7b
+executor:
+  name: python_executor
+  entry: ./index.py
+inputs_def:
+  - handle: image_path
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+        "ui:widget": file
+  - handle: preprocess
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+        enum:
+          - thresh
+          - blur
+outputs_def:
+  - handle: image_bin
+    serialize:
+      serializer: json
+      json_schema:
+        type: string

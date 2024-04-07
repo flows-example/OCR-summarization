@@ -1,0 +1,17 @@
+type: task_block
+title: python_lib_2bc3d9
+executor:
+  name: python_executor
+  entry: ./index.py
+inputs_def:
+  - handle: image_bin
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+outputs_def:
+  - handle: text
+    serialize:
+      serializer: json
+      json_schema:
+        type: string

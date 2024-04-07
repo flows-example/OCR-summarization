@@ -1,0 +1,13 @@
+name: OCR Summarization
+container:
+  scripts:
+    bootstrap: |
+      #!/bin/bash
+      set -e
+
+      sudo apt update
+      sudo apt-get install -y libgl1 libglib2.0-0
+      sudo apt-get install -y libleptonica-dev tesseract-ocr libtesseract-dev python3-pil tesseract-ocr-eng tesseract-ocr-script-latn
+
+      pip install --upgrade pip
+      pip install -r requirements.txt
