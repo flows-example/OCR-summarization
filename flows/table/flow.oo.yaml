@@ -4,7 +4,7 @@ nodes:
     inputs_from:
       - handle: file
         cache:
-          initial_value: /oomol-storage/tesseract/中国历年发电量(79前）.xlsx
+          initial_value: /oomol-storage/tesseract/中国历年发电量.xlsx
     title: Read File
   - task: excel::excel_decoder
     node_id: 03c4e59c-dc8c-46ae-815d-11bf0b8e0c10
@@ -37,7 +37,7 @@ nodes:
           initial_value: 年份
       - handle: with_sum
         cache:
-          initial_value: true
+          initial_value: 总计
     title: Transform
   - task: matplotlib::plot
     node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
@@ -83,6 +83,7 @@ nodes:
         from_node:
           - node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
             output_handle: image
+    title: Generate Plot Image
   - task: common::preview
     node_id: c10abf2f-7dec-4ff1-9913-7c8f8247c9ef
     inputs_from:
@@ -90,3 +91,4 @@ nodes:
         from_node:
           - node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
             output_handle: image
+    title: Plot Image Preview

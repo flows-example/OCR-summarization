@@ -31,10 +31,11 @@ inputs_def:
         items:
           type: string
   - handle: with_sum
+    optional: true
     serialize:
       serializer: json
       json_schema:
-        type: boolean
+        type: string
 outputs_def:
   - handle: data
   - handle: x_coordinate

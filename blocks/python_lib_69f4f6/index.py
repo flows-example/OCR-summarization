@@ -31,12 +31,12 @@ def main(inputs: dict, context):
       else:
         sub_data.append(0)
 
-  if inputs["with_sum"]:
+  if "with_sum" in inputs:
     sum_data = [0 for _ in x_coordinate]
     for _, sub_data in data_dict.items():
       for i, value in enumerate(sub_data):
         sum_data[i] += value
-    data_dict["Sum"] = sum_data
+    data_dict[inputs["with_sum"]] = sum_data
 
   context.output(data_dict, "data", False)
   context.output(x_coordinate, "x_coordinate", False)
