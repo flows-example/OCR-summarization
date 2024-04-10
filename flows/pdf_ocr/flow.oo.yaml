@@ -1,0 +1,43 @@
+nodes:
+  [
+    {
+        task: ../../blocks/python_lib_76cdf7/block.oo.yaml,
+        node_id: cdf77bf9-719d-4bd0-9934-742427dbf3c9,
+        inputs_from:
+          [
+            {
+                handle: pdf_file,
+                cache: { initial_value: /oomol-storage/books/内北国而外中国.pdf }
+              },
+            { handle: images_saved, cache: { initial_value: /oomol-storage/PDFORC } },
+            { handle: begin_page, cache: { initial_value: 123 } },
+            { handle: end_page, cache: { initial_value: 123 } },
+            { handle: resolution, cache: { initial_value: 400 } }
+          ],
+        title: PDF to Images
+      },
+    {
+        task: ../../blocks/python_lib_17c177/block.oo.yaml,
+        node_id: c1772ef4-b0c0-41d2-a5c2-61d8a4cfbe18,
+        inputs_from:
+          [
+            {
+                handle: images_path,
+                from_node:
+                  [
+                    { node_id: cdf77bf9-719d-4bd0-9934-742427dbf3c9, output_handle: images_path }
+                  ]
+              },
+            {
+                handle: image_names,
+                from_node:
+                  [
+                    { node_id: cdf77bf9-719d-4bd0-9934-742427dbf3c9, output_handle: image_names }
+                  ]
+              },
+            { handle: tessdata, cache: { initial_value: /oomol-storage/tesseract } },
+            { handle: lang, cache: { initial_value: chi_sim } }
+          ],
+        title: OCR
+      }
+  ]

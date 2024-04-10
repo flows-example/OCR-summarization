@@ -1,0 +1,40 @@
+type: task_block
+title: python_lib_17c177
+icon: https://static.oomol.com/icons/python.png
+executor:
+  name: python_executor
+  entry: ./index.py
+inputs_def:
+  - handle: images_path
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+  - handle: image_names
+    serialize:
+      serializer: json
+      json_schema:
+        type: array
+        items:
+          type: string
+  - handle: tessdata
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+        "ui:widget": file
+  - handle: lang
+    serialize:
+      serializer: json
+      json_schema:
+        type: string
+        enum:
+          - chi_sim
+
+outputs_def:
+  - handle: ocr_result
+    serialize:
+      serializer: json
+      json_schema:
+        type: array
+        items: object
