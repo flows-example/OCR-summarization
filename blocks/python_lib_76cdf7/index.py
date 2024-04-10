@@ -22,6 +22,8 @@ def main(inputs: dict, context):
 
   context.output(images_saved_path, "images_path", False)
   context.output(image_names, "image_names", False)
+  context.output(pdf_file_path, "pdf_file", False)
+  context.output(begin_page, "begin_page", False)
   context.done()
 
 def clear_folder(folder_path: str):

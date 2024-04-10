@@ -1,44 +1,17 @@
 type: task_block
-title: python_lib_76cdf7
+title: python_lib_c17878
 icon: https://static.oomol.com/icons/python.png
 executor:
   name: python_executor
   entry: ./index.py
 inputs_def:
-  - handle: pdf_file
+  - handle: ocr_result
     serialize:
       serializer: json
       json_schema:
-        type: string
-        "ui:widget": file
-  - handle: images_saved
-    serialize:
-      serializer: json
-      json_schema:
-        type: string
-        "ui:widget": file
-  - handle: resolution
-    optional: true
-    serialize:
-      serializer: json
-      json_schema:
-        type: integer
-        minimum: 1
-  - handle: begin_page
-    optional: true
-    serialize:
-      serializer: json
-      json_schema:
-        type: integer
-        minimum: 1
-  - handle: end_page
-    optional: true
-    serialize:
-      serializer: json
-      json_schema:
-        type: integer
-        minimum: 1
-outputs_def:
+        type: array
+        items:
+          type: object
   - handle: images_path
     serialize:
       serializer: json
@@ -63,3 +36,9 @@ outputs_def:
       json_schema:
         type: integer
         minimum: 1
+outputs_def:
+  - handle: bin
+    serialize:
+      serializer: json
+      json_schema:
+        type: string

@@ -37,4 +37,5 @@ outputs_def:
       serializer: json
       json_schema:
         type: array
-        items: object
+        items:
+          type: object
