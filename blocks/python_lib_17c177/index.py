@@ -12,7 +12,7 @@ def main(inputs: dict, context):
   lang = inputs["lang"]
   ocr_result: list = []
 
-  for image_name in image_names:
+  for i, image_name in enumerate(image_names):
     image_path = os.path.join(images_path, image_name)
     image = Image.open(image_path)
     data = pytesseract.image_to_data(
@@ -33,4 +33,5 @@ def main(inputs: dict, context):
       "width": width,
       "height": height,
     })
+    context.report_progress(float(i + 1) / float(len(image_names)))
   context.output(ocr_result, "ocr_result", True)

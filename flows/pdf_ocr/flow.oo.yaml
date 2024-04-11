@@ -11,7 +11,7 @@ nodes:
               },
             { handle: images_saved, cache: { initial_value: /oomol-storage/PDFORC } },
             { handle: begin_page, cache: { initial_value: 123 } },
-            { handle: end_page, cache: { initial_value: 123 } },
+            { handle: end_page, cache: { initial_value: 125 } },
             { handle: resolution, cache: { initial_value: 400 } }
           ],
         title: PDF to Images

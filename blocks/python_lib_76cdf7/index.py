@@ -12,6 +12,7 @@ def main(inputs: dict, context):
 
   clear_folder(images_saved_path)
   image_names: list[str] = []
+  all_tasks_count = float(max(end_page_index - begin_page_index + 1, 1))
 
   with pdfplumber.open(pdf_file_path) as pdf:
     for i, page in itertools.islice(enumerate(pdf.pages), begin_page_index, end_page_index):
@@ -19,11 +20,12 @@ def main(inputs: dict, context):
       image = page.to_image(resolution=resolution)
       image.save(os.path.join(images_saved_path, image_name))
       image_names.append(image_name)
+      context.report_progress(float(len(image_names)) / all_tasks_count)
 
   context.output(images_saved_path, "images_path", False)
   context.output(image_names, "image_names", False)
   context.output(pdf_file_path, "pdf_file", False)
-  context.output(begin_page, "begin_page", False)
+  context.output(begin_page_index, "begin_page", False)
   context.done()
 
 def clear_folder(folder_path: str):
