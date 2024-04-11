@@ -1,21 +1,35 @@
-import os
-import pdfplumber
+import io
+import base64
+
+from PIL import Image
+from PyPDF2 import PdfReader, PdfWriter, PageObject
 
 def main(inputs: dict, context):
-  ocr_list = inputs["ocr_result"]
-  pdf_file_path = inputs["pdf_file"]
-  begin_page_index = inputs["begin_page"] - 1
+  # https://pikepdf.readthedocs.io/en/latest/
 
-  with pdfplumber.open(pdf_file_path) as pdf:
-    for i, page in enumerate(pdf.pages):
-    #   if i < begin_page_index:
-    #     continue
-    #   index = i - begin_page_index
+  pdf_writer = PdfWriter()
+  ocr_result = inputs["ocr_result"]
+  pdf_paths = inputs["pdf_paths"]
 
-    #   if index >= len(ocr_list):
-    #     break
+  for i, ocr in enumerate(ocr_result):
+    with open(pdf_paths[i], "rb") as image_pdf_file:
+      image_pdf = PdfReader(image_pdf_file)
+      image_pdf_page = image_pdf.pages[0]
+      page = PageObject.create_blank_page(
+        width=image_pdf_page.mediabox.width,
+        height=image_pdf_page.mediabox.height,
+      )
+      page.merge_page()
+      page.merge_page(image_pdf_page, expand=False)
+      pdf_writer.add_page(page)
 
-    #   ocr = ocr_list[index]
-      page.filter(lambda x: False)
+    context.report_progress(float(i + 1) / float(len(ocr_result)))
 
-  context.output("result value", "out", True)
+  pdf_handle = io.BytesIO()
+  pdf_writer.write(pdf_handle)
+
+  pdf_handle.seek(0)
+  bin_data = pdf_handle.read()
+  str_data = base64.b64encode(bin_data).decode("utf-8")
+
+  context.output(str_data, "bin", True)

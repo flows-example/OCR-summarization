@@ -27,6 +27,7 @@ def main(inputs: dict, context):
     height = data["height"]
 
     ocr_result.append({
+      "path": image_path,
       "text": text,
       "left": left,
       "top": top,

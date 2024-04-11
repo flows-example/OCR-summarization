@@ -51,15 +51,3 @@ outputs_def:
         type: array
         items:
           type: string
-  - handle: pdf_file
-    serialize:
-      serializer: json
-      json_schema:
-        type: string
-        "ui:widget": file
-  - handle: begin_page
-    serialize:
-      serializer: json
-      json_schema:
-        type: integer
-        minimum: 1

@@ -1,5 +1,5 @@
 type: task_block
-title: python_lib_c17878
+title: python_lib_f58e34
 icon: https://static.oomol.com/icons/python.png
 executor:
   name: python_executor
@@ -12,6 +12,7 @@ inputs_def:
         type: array
         items:
           type: object
+outputs_def:
   - handle: pdf_paths
     serialize:
       serializer: json
@@ -19,9 +20,3 @@ inputs_def:
         type: array
         items:
           type: string
-outputs_def:
-  - handle: bin
-    serialize:
-      serializer: json
-      json_schema:
-        type: string
