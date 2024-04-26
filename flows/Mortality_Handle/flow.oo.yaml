@@ -1,0 +1,66 @@
+nodes:
+  - task: excel::table_to_markdown
+    node_id: f569bdfa-ca5c-4ebb-bbe9-3d3656550002
+    inputs_from:
+      - handle: fields
+        from_node:
+          - node_id: 4e9e81c2-2f2c-4b9e-b726-60243e28212e
+            output_handle: fields
+      - handle: rows
+        from_node:
+          - node_id: ee70e426-d196-42ba-8405-f69f3fea9ca6
+            output_handle: out
+  - task: excel::csv_reader
+    node_id: 4e9e81c2-2f2c-4b9e-b726-60243e28212e
+    inputs_from:
+      - handle: file
+        cache:
+          initial_value: /oomol-storage/tesseract/mortality/population_pixels.csv
+  - task: preview::markdown_preview
+    node_id: f581abdd-56e9-40f0-9002-73f93d81506a
+    inputs_from:
+      - handle: text
+        from_node:
+          - node_id: f569bdfa-ca5c-4ebb-bbe9-3d3656550002
+            output_handle: markdown
+  - task: language::javascript_script
+    node_id: ee70e426-d196-42ba-8405-f69f3fea9ca6
+    inputs_from:
+      - handle: _OOMOL_OPTIONS
+        cache:
+          initial_value:
+            content: |-
+              export default async function(inputs, context) {
+                const pixelRate = 220.0 / 495.0;
+                const rows = inputs["in"].map((row) => {
+                  for (const key of ["Balck Males", "Black Females"]) {
+                    const value = parseInt(row[key]);
+                    row[key] = Math.round(value * pixelRate);
+                  }
+                  return row;
+                });
+                context.output(rows, "out", true);
+              }
+      - handle: in
+        from_node:
+          - node_id: 4e9e81c2-2f2c-4b9e-b726-60243e28212e
+            output_handle: rows
+    title: Convert Pixels to Population
+  - task: excel::csv_writer
+    node_id: 7652dabb-41ae-4ed3-855e-44632e4f57a0
+    inputs_from:
+      - handle: rows
+        from_node:
+          - node_id: ee70e426-d196-42ba-8405-f69f3fea9ca6
+            output_handle: out
+      - handle: fields
+        from_node:
+          - node_id: 4e9e81c2-2f2c-4b9e-b726-60243e28212e
+            output_handle: fields
+      - handle: file_name
+        cache:
+          initial_value: population.csv
+      - handle: output_folder
+        cache:
+          initial_value: /oomol-storage/tesseract/mortality/
+    description: 将修改后的值写入文件
