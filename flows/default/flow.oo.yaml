@@ -1,29 +1,20 @@
 nodes:
-  [
-    {
-        task: ../../blocks/python_lib_c6aa7b/block.oo.yaml,
-        node_id: aa7bfec3-9387-497a-99b8-155ca224b072,
-        inputs_from:
-          [
-            {
-                handle: image_path,
-                cache: { initial_value: /oomol-storage/tesseract/中国历年全国发电量.jpg }
-              },
-            { handle: preprocess, cache: { initial_value: blur } }
-          ],
-        title: Convert Gray Image,
-        description: 使用 OCR 读取图片中的内容
-      },
-    {
-        task: ../../blocks/python_lib_2bc3d9/block.oo.yaml,
-        node_id: c3d99ba5-cd6b-49d7-863a-a3e212769fef,
-        inputs_from:
-          [
-            {
-                handle: image_bin,
-                from_node: [ { node_id: aa7bfec3-9387-497a-99b8-155ca224b072, output_handle: image_bin } ]
-              }
-          ],
-        title: OCR
-      }
-  ]
+  - task: ../../blocks/python_lib_c6aa7b/block.oo.yaml
+    node_id: aa7bfec3-9387-497a-99b8-155ca224b072
+    inputs_from:
+      - handle: image_path
+        cache:
+          initial_value: /oomol-storage/tesseract/中国历年全国发电量.jpg
+      - handle: preprocess
+        cache:
+          initial_value: blur
+    title: Convert Gray Image
+    description: 使用 OCR 读取图片中的内容
+  - task: ../../blocks/python_lib_2bc3d9/block.oo.yaml
+    node_id: c3d99ba5-cd6b-49d7-863a-a3e212769fef
+    inputs_from:
+      - handle: image_bin
+        from_node:
+          - node_id: aa7bfec3-9387-497a-99b8-155ca224b072
+            output_handle: image_bin
+    title: OCR

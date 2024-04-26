@@ -1,0 +1,77 @@
+nodes:
+  - task: ../../blocks/python_lib_76cdf7/block.oo.yaml
+    node_id: cdf77bf9-719d-4bd0-9934-742427dbf3c9
+    inputs_from:
+      - handle: pdf_file
+        cache:
+          initial_value: /oomol-storage/books/内北国而外中国.pdf
+      - handle: images_saved
+        cache:
+          initial_value: /oomol-storage/PDFORC
+      - handle: begin_page
+        cache:
+          initial_value: 123
+      - handle: end_page
+        cache:
+          initial_value: 124
+      - handle: resolution
+        cache:
+          initial_value: 400
+    title: PDF to Images
+  - task: ../../blocks/python_lib_17c177/block.oo.yaml
+    node_id: c1772ef4-b0c0-41d2-a5c2-61d8a4cfbe18
+    inputs_from:
+      - handle: images_path
+        from_node:
+          - node_id: cdf77bf9-719d-4bd0-9934-742427dbf3c9
+            output_handle: images_path
+      - handle: image_names
+        from_node:
+          - node_id: cdf77bf9-719d-4bd0-9934-742427dbf3c9
+            output_handle: image_names
+      - handle: tessdata
+        cache:
+          initial_value: /oomol-storage/tesseract
+      - handle: lang
+        cache:
+          initial_value: chi_sim
+    title: OCR
+  - task: ../../blocks/python_lib_c17878/block.oo.yaml
+    node_id: 78788c54-6a97-4cb5-a15f-0e4d0cf9acb7
+    inputs_from:
+      - handle: ocr_result
+        from_node:
+          - node_id: c1772ef4-b0c0-41d2-a5c2-61d8a4cfbe18
+            output_handle: ocr_result
+      - handle: pdf_paths
+        from_node:
+          - node_id: 8e34250f-9810-4e88-8bbf-ab5a4c458462
+            output_handle: pdf_paths
+    title: Generate PDF
+  - task: ../../blocks/python_lib_f58e34/block.oo.yaml
+    node_id: 8e34250f-9810-4e88-8bbf-ab5a4c458462
+    inputs_from:
+      - handle: ocr_result
+        from_node:
+          - node_id: c1772ef4-b0c0-41d2-a5c2-61d8a4cfbe18
+            output_handle: ocr_result
+    title: Images to PDF
+  - task: file::file_writer
+    node_id: 450b106f-ecaf-4a5b-a5a8-be539cb11a22
+    inputs_from:
+      - handle: file_name
+        cache:
+          initial_value: _target.pdf
+      - handle: output_folder
+        cache:
+          initial_value: /oomol-storage/PDFORC
+      - handle: create_folder_if_need
+        cache:
+          initial_value: false
+      - handle: when_file_exists
+        cache:
+          initial_value: override
+      - handle: binary
+        from_node:
+          - node_id: 78788c54-6a97-4cb5-a15f-0e4d0cf9acb7
+            output_handle: bin

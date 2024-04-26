@@ -1,18 +1,11 @@
 nodes:
-  - task: common::file_reader
-    node_id: d087fdd4-4683-4e3b-9ef5-c4bb53ff9fd4
-    inputs_from:
-      - handle: file
-        cache:
-          initial_value: /oomol-storage/tesseract/中国历年发电量.xlsx
-    title: Read File
   - task: excel::excel_decoder
     node_id: 03c4e59c-dc8c-46ae-815d-11bf0b8e0c10
     inputs_from:
       - handle: disable_field_names
       - handle: binary
         from_node:
-          - node_id: d087fdd4-4683-4e3b-9ef5-c4bb53ff9fd4
+          - node_id: 81b059a8-2cb4-46e6-ba30-39ae460bda0d
             output_handle: binary
     title: Decode EXCEL
   - task: ../../blocks/python_lib_69f4f6/block.oo.yaml
@@ -67,8 +60,14 @@ nodes:
           initial_value: 亿 kWh
       - handle: background_color
     title: Plot
-  - task: common::file_writer
-    node_id: f7378005-1c79-4284-9f3e-505866ff68b8
+  - task: file::file_reader
+    node_id: 81b059a8-2cb4-46e6-ba30-39ae460bda0d
+    inputs_from:
+      - handle: file
+        cache:
+          initial_value: /oomol-storage/tesseract/中国历年发电量.xlsx
+  - task: file::file_writer
+    node_id: 1eae9e47-84bb-4fd1-b6cf-fde666346f9e
     inputs_from:
       - handle: file_name
         cache:
@@ -83,12 +82,10 @@ nodes:
         from_node:
           - node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
             output_handle: image
-    title: Generate Plot Image
-  - task: common::preview
-    node_id: c10abf2f-7dec-4ff1-9913-7c8f8247c9ef
+  - task: preview::image_preview
+    node_id: a55416d3-caed-4433-857e-8aee71494d4a
     inputs_from:
       - handle: file
         from_node:
           - node_id: 459af5a5-4af2-46f7-b8f0-e7fe193d14e9
             output_handle: image
-    title: Plot Image Preview
